@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="cBody">
+    <form id="addForm" class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline shortInput">
+                <label>
+                    <input id="name" type="text" name="identity" required autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录密码</label>
+            <div class="layui-input-inline shortInput">
+                <label>
+                    <input id="password" type="password" name="password" required autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <label for="sex"></label><select id="sex">
+            </select>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在部门</label>
+            <div class="layui-input-inline">
+                <label for="department"></label><select name="provid" id="department">
+            </select>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">岗位</label>
+            <div class="layui-input-inline">
+                <label for="position"></label><select name="provid" id="position" >
+            </select>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">进公司日期</label>
+            <div class="layui-input-inline shortInput">
+                <label>
+                    <input id="date" type="date" name="realName" required  autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-inline shortInput">
+                <label>
+                    <input id="telephone" type="text" name="telephone" required autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <i class="iconfont icon-huaban bt"></i>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" id="confirm" >立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+        <div id="test"></div>
+    </form>
+</div>
+</body>
+</html>

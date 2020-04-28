@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+		<!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+		<meta name="renderer" content="webkit">
+		<!--国产浏览器高速模式-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="fanxy" />
+		<!-- 作者 -->
+		<meta name="revised" content="fanxy.v1, 2020/04" />
+		<!-- 定义页面的最新版本 -->
+		<meta name="description" content="网站简介" />
+		<!-- 网站简介 -->
+		<title>斯坦德公司人事综合考评系统</title>
+
+		<!-- 公共样式 开始 -->
+		<!-- 为网页加图标 -->
+		<link rel="shortcut icon" href="../static/images/favicon.ico" />
+		<!-- 添加样式表 -->
+		<link rel="stylesheet" type="text/css" href="../static/css/base.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/iconfont.css">
+		<script type="text/javascript" src="../static/framework/jquery-1.11.3.min.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css">
+	    <!--[if lt IE 9]>
+		<script src="../static/framework/html5shiv.min.js"></script>
+		<script src="../static/framework/respond.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="../static/layui/layui.js"></script>
+		<!-- 滚动条插件 -->
+		<link rel="stylesheet" type="text/css" href="../static/css/jquery.mCustomScrollbar.css">
+		<script src="../static/framework/jquery-ui-1.10.4.min.js"></script>
+		<script src="../static/framework/jquery.mousewheel.min.js"></script>
+		<script src="../static/framework/jquery.mCustomScrollbar.min.js"></script>
+		<script src="../static/framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+		<!-- 公共样式 结束 -->
+
+		<link rel="stylesheet" type="text/css" href="../static/css/frameStyle.css">
+		<script type="text/javascript" src="../static/framework/frame.js" ></script>
+
+	</head>
+
+	<body>
+		<!-- 左侧菜单 - 开始 -->
+		<div class="frameMenu">
+		    <div class="logo">
+		        <img src="../static/images/logo.png"/>
+		        <div class="logoText">
+		            <h1>斯坦德公司</h1>
+		            <p>SITANDE</p>
+		        </div>
+		    </div>
+		    <div class="menu">
+		        <ul>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)" id="sign"><i class="iconfont icon-zhishi left"></i>签到</a>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>员工管理<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)" id="addUser">添加员工</a></dt>
+		                	<dt><a href="javascript:void(0)" id="userList">员工列表</a></dt>
+		                </dl>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>部门管理<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <dl>
+		                	<dt><a href="javascript:void(0)">部门列表</a></dt>
+		                </dl>
+		            </li>
+		        	<li>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-caiwu left"></i>财务管理</a>
+		           	</li>
+
+		        </ul>
+		    </div>
+		</div>
+		<!-- 左侧菜单 - 结束 -->
+
+		<div class="main">
+			<!-- 头部栏 - 开始 -->
+			<div class="frameTop">
+				<img class="jt" src="../static/images/top_jt.png"/>
+				<div class="topMenu">
+					<ul>
+						<li><a href="javascript:void(0)" id="name"><i class="iconfont icon-yonghu1"></i>管理员</a></li>
+						<li><a href="javascript:void(0)" id="cgPassword"><i class="iconfont icon-xiugaimima"></i>修改密码</a></li>
+						<li><a href="/login"><i class="iconfont icon-084tuichu"></i>注销</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- 头部栏 - 结束 -->
+
+			<!-- 核心区域 - 开始 -->
+			<div class="frameMain">
+				<div class="title" id="frameMainTitle">
+					<span id="title"><i class="iconfont icon-xianshiqi"></i>签到</span>
+				</div>
+				<div class="con">
+					<iframe id="mainIframe" scrolling="no" src="/sign"></iframe>
+				</div>
+			</div>
+			<!-- 核心区域 - 结束 -->
+		</div>
+
+
+		<script type="text/javascript">
+			$(function () {
+				getUserdata();
+
+				/**
+				 * 动态获取字典值
+				 * @param data.resultdata.dictionaryId 字典ID
+				 * @param data.resultdata.statsName 字典名字
+				 */
+				var url = "http://localhost:8080/api/dic";
+				$.get(url,function (dicData) {
+					sessionStorage.setItem("dicData",JSON.stringify(dicData));
+				},"json");
+			});
+			function getUserdata() {
+				var userdata = window.location.href.split("/")[4]
+				var name = userdata.split("?")[0];
+				var id = userdata.split("?")[1];
+				sessionStorage.setItem("id",id);
+				$("#name").text(name);
+			}
+
+			$('#sign').click(function () {
+				document.getElementById('mainIframe').src="/sign";
+				document.getElementById('title').innerText = "签到";
+			})
+
+			$('#addUser').click(function () {
+				document.getElementById('mainIframe').src="/addUser";
+				document.getElementById('title').innerText = "添加员工";
+			})
+
+			$('#cgPassword').click(function () {
+				var username = $('#name').text();
+				sessionStorage.setItem("username",JSON.stringify(username));
+				document.getElementById('mainIframe').src="/cgPassword";
+				document.getElementById('title').innerText = "重置密码";
+
+			})
+			$("#userList").click(function () {
+				document.getElementById('mainIframe').src="/userList";
+				document.getElementById('title').innerText = "员工列表";
+			})
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.220.128:3306/std?characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: 192.168.220.128
+    port: 6379
+    database: 0
+    pool:
+      max-active: 8
+      max-wait: 3000
+      max-idle: 8
+      min-idle: 2
+    timeout: 5000
+  mvc:
+    static-path-pattern: /static/**
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+
+
+
