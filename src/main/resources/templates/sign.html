@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css">
+</head>
+<body>
+
+<button id="sign" class="layui-btn">签到</button>            <a id="message"></a>
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="../static/layui/layui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var id = sessionStorage.getItem("id");
+        var url = "http://localhost:8080/sign/getSignMask/"+id;
+        $.get(url,function (data) {
+            $('#message').html('您本月已经签到'+data.resultdata+'天');
+            if(data.sign === 'error'){
+                $("#sign").attr("disabled",true).html("已经签到");
+            }
+
+            //边缘弹出
+            layui.use(['layer'], function(){
+                var layer = layui.layer;
+                    layer.open({
+                    area:'300px',
+                    type: 1
+                    ,offset: 'rb'  //具体配置参考：offset参数项
+                    ,content: '<div style="padding: 20px 80px;">'+data.msg+'</div>'
+                    ,btn: '关闭全部'
+                    ,btnAlign: 'c' //按钮居中
+                    ,shade: 0 //不显示遮罩
+                    ,yes: function(){
+                        layer.closeAll();
+                    }
+                });
+            })
+        },"json")
+    });
+
+    $("#sign").click(function () {
+        var url = "http://localhost:8080/sign/signByUserId/"+sessionStorage.getItem("id");
+        $.post(url,function (data) {
+            layer.alert(data.msg, {icon: 6});
+            $('#message').html('您本月已经签到'+data.resultdata+'天');
+            $("#sign").attr("disabled",true).html("已经签到");
+        },"json")
+    })
+</script>
+
+</body>
+</html>

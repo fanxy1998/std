@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fanxy.mapper.DictionaryMapper" >
+
+    <resultMap id="ResultMap" type="com.fanxy.entity.DictionaryEntity">
+        <result column="ID_" jdbcType="INTEGER" property="id"/>
+        <result column="DICTIONARY_ID" jdbcType="INTEGER" property="dictionaryId"/>
+        <result column="STATS_ID" jdbcType="VARCHAR" property="statsId"/>
+        <result column="STATS_NAME" jdbcType="VARCHAR" property="statsName"/>
+    </resultMap>
+
+    <select id="getDictionValue" resultMap="ResultMap">
+        SELECT * FROM STD_DICTIONARY_STATUS
+    </select>
+
+
+</mapper>

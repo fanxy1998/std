@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fanxy.mapper.EmInfomationMapper" >
+
+    <resultMap id="EmResultMap" type="com.fanxy.entity.EmInformationEntity">
+        <result column="ID_" jdbcType="INTEGER" property="id"/>
+        <result column="USERNAME_" jdbcType="VARCHAR" property="username"/>
+        <result column="PASSWORD_" jdbcType="VARCHAR" property="password"/>
+        <result column="SEX_" jdbcType="VARCHAR" property="sex"/>
+        <result column="DEPARMENT_" jdbcType="VARCHAR" property="department"/>
+        <result column="POSITION_" jdbcType="VARCHAR" property="position"/>
+        <result column="DATEINTOCOMPANY_" jdbcType="DATE" property="dateIntoCompany"/>
+        <result column="TELEPHONE_" jdbcType="VARCHAR" property="telephone"/>
+        <result column="CREATE_TIME" jdbcType="DATE" property="CREATE_TIME"/>
+        <result column="CREATE_USER" jdbcType="INTEGER" property="CREATE_USER"/>
+        <result column="USE_STATE" jdbcType="INTEGER" property="USE_STATE"/>
+        <result column="TAG_1" jdbcType="VARCHAR" property="TAG_1"/>
+        <result column="TAG_2" jdbcType="VARCHAR" property="TAG_2"/>
+        <result column="TAG_3" jdbcType="VARCHAR" property="TAG_3"/>
+    </resultMap>
+
+    <select id="findEminfoById" resultMap="EmResultMap" parameterType="int">
+       SELECT USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_
+       FROM STD_EM_INFORMATION
+       WHERE ID_ = #{id}
+    </select>
+
+    <select id="queryEm" resultMap="EmResultMap">
+        SELECT ID_,USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_,TELEPHONE_
+        FROM STD_EM_INFORMATION LIMIT #{begin},#{num};
+    </select>
+
+
+    <select id="findEmByDepartment" resultMap="EmResultMap" parameterType="int">
+      SELECT USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_  FROM STD_EM_INFORMATION
+      WHERE DEPARMENT_ IN
+      (SELECT STATS_ID FROM STD_DICTIONARY_STATUS WHERE DICTIONARY_ID = #{department})
+    </select>
+
+
+    <select id="login" resultMap="EmResultMap">
+        select * from STD_EM_INFORMATION where USERNAME_ = #{username} and PASSWORD_ = #{password}
+    </select>
+
+    <update id="updatePassword" parameterType="string">
+        UPDATE STD_EM_INFORMATION SET PASSWORD_ = #{password} WHERE USERNAME_ = #{username}
+    </update>
+
+    <insert id="insertEm" parameterType="com.fanxy.entity.EmInformationEntity">
+        INSERT INTO STD_EM_INFORMATION(USERNAME_,PASSWORD_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_,TELEPHONE_)
+        VALUES(#{username},#{password},#{sex},#{department},#{position},#{dateIntoCompany},#{telephone})
+    </insert>
+
+    <delete id="deleteEm" parameterType="string">
+        DELETE FROM STD_EM_INFORMATION WHERE USERNAME_ = #{username}
+    </delete>
+
+    <update id="updateEm" parameterType="com.fanxy.entity.EmInformationEntity">
+        UPDATE STD_EM_INFORMATION SET DEPARMENT_ = #{department},POSITION_ = #{position},TELEPHONE_ = #{telephone}
+        WHERE USERNAME_ = #{username}
+    </update>
+
+    <select id="getMaxId" resultType="int">
+        SELECT max(ID_) FROM STD_EM_INFORMATION
+    </select>
+</mapper>

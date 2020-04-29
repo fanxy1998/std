@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../static/framework/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css">
+    <script type="text/javascript" src="../static/layui/layui.js"></script>
+</head>
+<body>
+<form id="addForm" class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline shortInput">
+            <label>
+                <input id="name" type="text" name="identity" required autocomplete="off" class="layui-input">
+            </label>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-inline">
+            <label for="sex"></label><select id="sex">
+        </select>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">所在部门</label>
+        <div class="layui-input-inline">
+            <label for="department"></label><select name="provid" id="department">
+        </select>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">岗位</label>
+        <div class="layui-input-inline">
+            <label for="post"></label><select name="provid" id="post" >
+        </select>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">进公司日期</label>
+        <div class="layui-input-inline shortInput">
+            <label>
+                <input id="dateintocompany" type="date" name="realName" required  autocomplete="off" class="layui-input">
+            </label>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系方式</label>
+        <div class="layui-input-inline shortInput">
+            <label>
+                <input id="telephone" type="text" name="telephone" required autocomplete="off" class="layui-input">
+            </label>
+        </div>
+        <i class="iconfont icon-huaban bt"></i>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="confirm" >立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+
+    function child(data) {
+        $("#name").attr("value",data[0]);
+        //动态获取字典值
+        var dicData = JSON.parse(sessionStorage.getItem("dicData"));
+        for(var i in dicData.resultdata){
+            if(dicData.resultdata[i].dictionaryId === 1){
+                $("#sex").append(new Option(dicData.resultdata[i].statsName,dicData.resultdata[i].statsName));
+            }
+            if(dicData.resultdata[i].dictionaryId === 2){
+                $("#department").append(new Option(dicData.resultdata[i].statsName,dicData.resultdata[i].statsName));
+            }
+            if(dicData.resultdata[i].dictionaryId === 3){
+                $("#post").append(new Option(dicData.resultdata[i].statsName,dicData.resultdata[i].statsName));
+            }
+            //不加这个选择框不刷新
+            layui.form.render("select");
+        }
+        $("#dateintocompany").attr("value",getMyDate(data[4]));
+        $("#telephone").attr("value",data[5]);
+    }
+
+    //转化日期格式
+    function getMyDate(str){
+        var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate();
+        //最后拼接时间
+        return oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);
+    }
+    //补0操作
+    function getzf(num){
+        if(parseInt(num) < 10){
+            num = '0'+num;
+        }
+        return num;
+    }
+
+    /***
+     * 提交表单
+     */
+    $('#confirm').click(function () {
+        var name = $('#name');
+        var sex = $('#sex');
+        var department = $('#department');
+        var position = $('#post');
+        var date = $('#dateintocompany');
+        var telephone = $('#telephone');
+        if(name.val() === "" || sex.val() === ""
+            || department.val() === "" || position.val() === "" || date.val() === "" || telephone.val() === ""){
+            return layer.msg('请填写必填项！');
+        }
+        var emData = {};
+        emData["username"] = name.val();
+        emData["department"] = department.val();
+        emData["position"] = position.val();
+        emData["telephone"] = telephone.val();
+        $.ajax({
+            async:false,
+            type: "POST",
+            contentType: "application/json",
+            url: "http://localhost:8080/em/updateEm",
+            data: JSON.stringify(emData),
+            success: function (data) {
+                alert(data);
+                var index = parent.layer.getFrameIndex(window.name);
+                //关闭当前页
+                parent.layer.close(index);
+            }
+        })
+    })
+
+</script>
+</body>
+
+</html>

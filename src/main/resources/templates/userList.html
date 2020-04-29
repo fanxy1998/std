@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+		<!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+		<meta name="renderer" content="webkit">
+		<!--国产浏览器高速模式-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="fanxy" />
+		<!-- 作者 -->
+		<meta name="revised" content="fanxy.v1, 2020/04" />
+		<!-- 定义页面的最新版本 -->
+		<meta name="description" content="网站简介" />
+		<!-- 网站简介 -->
+		<meta name="keywords" content="搜索关键字，以半角英文逗号隔开" />
+		<title>用户列表</title>
+
+		<!-- 公共样式 开始 -->
+		<link rel="stylesheet" type="text/css" href="../static/css/base.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/iconfont.css">
+		<script type="text/javascript" src="../static/framework/jquery-1.11.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css">
+		<script type="text/javascript" src="../static/layui/layui.js"></script>
+		<!-- 滚动条插件 -->
+		<link rel="stylesheet" type="text/css" href="../static/css/jquery.mCustomScrollbar.css">
+		<script src="../static/framework/jquery-ui-1.10.4.min.js"></script>
+		<script src="../static/framework/jquery.mousewheel.min.js"></script>
+		<script src="../static/framework/jquery.mCustomScrollbar.min.js"></script>
+		<script src="../static/framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+		<!-- 公共样式 结束 -->
+
+	</head>
+
+	<body>
+			<table class="layui-table" id = "emTable">
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>所在部门</th>
+						<th>岗位</th>
+						<th>进公司日期</th>
+						<th>联系方式</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="template">
+						<td id="name"></td>
+						<td id="sex"></td>
+						<td id="deparment"></td>
+						<td id="post"></td>
+						<td id="dateintocompany"></td>
+						<td id="telephone"></td>
+						<td>
+							<button class="layui-btn layui-btn-xs" onclick="updateBut(this)">修改</button>
+							<button class="layui-btn layui-btn-xs" onclick="deleteUser(this)">删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<!-- layUI 分页模块 -->
+			<div id="pages"></div>
+		</div>
+
+        <script type="text/javascript">
+
+			$(window).on('load',function () {
+
+				/**
+				 * 获取员工列表
+				 */
+				var url = "http://localhost:8080/em/queryEm/"+1;
+				$.get(url,function (emData) {
+					//console.log(emData.resultdata.length);
+					$.each(emData.resultdata,function (i,n) {
+						var row = $("#template").clone();
+						row.find("#name").text(n.username);
+						row.find("#sex").text(n.sex);
+						row.find("#deparment").text(n.department);
+						row.find("#post").text(n.position);
+						row.find("#dateintocompany").text(getMyDate(n.dateIntoCompany));
+						row.find("#telephone").text(n.telephone);
+						row.appendTo("#emTable");
+					});
+					//删除第二行,即删除空白行
+					$("#emTable tr").eq(1).remove();
+				});
+
+
+				/***
+				 * 分页模块
+				 */
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage;
+					//总页数大于页码总数
+					laypage.render({
+						elem: 'pages'
+						//数据总数
+						,count: 20
+						//每页显示条数
+						,limit:10
+						,layout: ['count', 'prev', 'page', 'next', 'skip']
+						,jump: function(obj){
+						}
+					});
+				});
+			});
+
+			//修改按钮
+			var updateFrame = null;
+			function updateBut(obj){
+				var username = $(obj).parents("tr").find("td:eq(0)").html();
+				var sex = $(obj).parents("tr").find("td:eq(1)").html();
+				var deparment = $(obj).parents("tr").find("td:eq(2)").html();
+				var post = $(obj).parents("tr").find("td:eq(3)").html();
+				var dateintocompany = $(obj).parents("tr").find("td:eq(4)").html();
+				var telephone = $(obj).parents("tr").find("td:eq(5)").html();
+				var data = new Array(username,sex,deparment,post,dateintocompany,telephone);
+				layui.use('layer', function() {
+					var layer = layui.layer;
+					//iframe层-父子操作
+					updateFrame = layer.open({
+						title: "员工信息修改",
+						type: 2,
+						area: ['70%', '60%'],
+						scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
+						maxmin: true,
+						content: 'updateUser',
+						success:function(layero, index){
+							var iframe = window['layui-layer-iframe'+index];
+							//调用子页面的全局函数
+							iframe.child(data);
+						}
+					});
+				});
+			}
+
+			/**
+			 * 删除员工
+			 */
+			function deleteUser(obj){
+				var url = "http://localhost:8080/em/deleteUser/"+$(obj).parents("tr").find("td:eq(0)").html();
+				$.get(url,function (data) {
+					alert(data);
+					window.location.reload()
+				});
+			}
+
+			//转化日期格式
+			function getMyDate(str){
+				var oDate = new Date(str),
+				oYear = oDate.getFullYear(),
+				oMonth = oDate.getMonth()+1,
+				oDay = oDate.getDate();
+				return oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
+			}
+			//补0操作
+			function getzf(num){
+				if(parseInt(num) < 10){
+					num = '0'+num;
+				}
+				return num;
+			}
+		</script>
+
+
+	</body>
+
+</html>
