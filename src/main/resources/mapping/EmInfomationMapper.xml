@@ -27,14 +27,13 @@
 
     <select id="queryEm" resultMap="EmResultMap">
         SELECT ID_,USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_,TELEPHONE_
-        FROM STD_EM_INFORMATION LIMIT #{begin},#{num};
+        FROM STD_EM_INFORMATION
     </select>
 
 
-    <select id="findEmByDepartment" resultMap="EmResultMap" parameterType="int">
-      SELECT USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_  FROM STD_EM_INFORMATION
-      WHERE DEPARMENT_ IN
-      (SELECT STATS_ID FROM STD_DICTIONARY_STATUS WHERE DICTIONARY_ID = #{department})
+    <select id="findEmByDepartment" resultMap="EmResultMap" parameterType="string">
+      SELECT ID_,USERNAME_,SEX_,DEPARMENT_,POSITION_,DATEINTOCOMPANY_,TELEPHONE_  FROM STD_EM_INFORMATION
+      WHERE DEPARMENT_  = #{department}
     </select>
 
 

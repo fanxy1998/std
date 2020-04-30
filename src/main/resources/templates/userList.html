@@ -69,13 +69,12 @@
         <script type="text/javascript">
 
 			$(window).on('load',function () {
-
 				/**
 				 * 获取员工列表
 				 */
-				var url = "http://localhost:8080/em/queryEm/"+1;
+				var url = "http://localhost:8080/em/queryEm/"+sessionStorage.getItem("id");
 				$.get(url,function (emData) {
-					//console.log(emData.resultdata.length);
+					console.log(emData);
 					$.each(emData.resultdata,function (i,n) {
 						var row = $("#template").clone();
 						row.find("#name").text(n.username);
@@ -90,24 +89,6 @@
 					$("#emTable tr").eq(1).remove();
 				});
 
-
-				/***
-				 * 分页模块
-				 */
-				layui.use(['laypage', 'layer'], function() {
-					var laypage = layui.laypage;
-					//总页数大于页码总数
-					laypage.render({
-						elem: 'pages'
-						//数据总数
-						,count: 20
-						//每页显示条数
-						,limit:10
-						,layout: ['count', 'prev', 'page', 'next', 'skip']
-						,jump: function(obj){
-						}
-					});
-				});
 			});
 
 			//修改按钮

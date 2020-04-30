@@ -37,10 +37,22 @@ public interface SignRecordMapper {
 
     /**
      * 查询员工签到信息
-     * @param begin 开始
-     * @param nums  个数
      * @return 员工签到信息列表
      */
-    List<EmSignVo> queryEmSignInfo(@Param("begin") int begin,@Param("nums") int nums);
+    List<EmSignVo> queryEmSignInfo();
+
+    /**
+     * 按部门查询员工签到信息
+     * @param department 部门名字
+     * @return 员工签到信息列表
+     */
+    List<EmSignVo> queryEmSignInfoByDepartment(String department);
+
+    /**
+     * 根据ID查询员工签到信息
+     * @param userId 员工ID
+     * @return 员工签到信息列表
+     */
+    List<EmSignVo> queryEmSignInfoByUserId(int userId);
 
 }

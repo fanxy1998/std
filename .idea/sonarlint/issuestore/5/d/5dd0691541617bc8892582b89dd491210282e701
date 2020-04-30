@@ -1,0 +1,15 @@
+
+…"squid:ClassVariableVisibilityCheck
+"WMake CREATE_TIME a static final constant or non-public and provide accessors if needed.(ó–¦
+…"squid:ClassVariableVisibilityCheck"WMake CREATE_USER a static final constant or non-public and provide accessors if needed.(¥¡©ñ
+ƒ"squid:ClassVariableVisibilityCheck"UMake USE_STATE a static final constant or non-public and provide accessors if needed.(ì‡³Ã
+„"squid:ClassVariableVisibilityCheck"QMake TAG_1 a static final constant or non-public and provide accessors if needed.(»ª¾úÿÿÿÿ
+„"squid:ClassVariableVisibilityCheck"QMake TAG_2 a static final constant or non-public and provide accessors if needed.(ì•–¶üÿÿÿÿ
+"squid:ClassVariableVisibilityCheck"QMake TAG_3 a static final constant or non-public and provide accessors if needed.(íŠ÷ğ
+nsquid:S00116
+"VRename this field "CREATE_TIME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ó–¦
+nsquid:S00116"VRename this field "CREATE_USER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥¡©ñ
+lsquid:S00116"TRename this field "USE_STATE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ì‡³Ã
+msquid:S00116"PRename this field "TAG_1" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»ª¾úÿÿÿÿ
+msquid:S00116"PRename this field "TAG_2" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ì•–¶üÿÿÿÿ
+hsquid:S00116"PRename this field "TAG_3" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(íŠ÷ğ

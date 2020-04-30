@@ -1,5 +1,7 @@
 package com.fanxy.controller;
+import com.fanxy.entity.EmInformationEntity;
 import com.fanxy.result.Result;
+import com.fanxy.service.EmInfomationService;
 import com.fanxy.service.SignRecordService;
 import com.fanxy.vo.EmSignVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,16 @@ public class SignRecordController {
 
     private SignRecordService signRecordService;
 
+    private EmInfomationService emInfomationService;
+
     @Autowired
     public SignRecordController(SignRecordService signRecordService) {
         this.signRecordService = signRecordService;
+    }
+
+    @Autowired
+    public void setEmInfomationService(EmInfomationService emInfomationService) {
+        this.emInfomationService = emInfomationService;
     }
 
     /**
@@ -62,15 +71,24 @@ public class SignRecordController {
     }
 
     /**
-     * 分页查询员工考勤信息
-     * @param page 页码
+     * 查询员工考勤信息
+     * @param userId 员工ID
      * @return 员工列表
      */
-    @GetMapping("queryEmSignInfo/{page}")
-    public List<EmSignVo> queryEmSignInfo(@PathVariable("page") int page){
-        int begin = (page-1)*10;
-        return signRecordService.queryEmSignInfo(begin,10);
+    @GetMapping("queryEmSignInfo/{userId}")
+    public List<EmSignVo> queryEmSignInfo(@PathVariable("userId") int userId){
+        String position = "普通员工";
+        if(userId!=1){
+            EmInformationEntity emInformationEntity = emInfomationService.queryByUserId(userId);
+            if(emInformationEntity!=null){
+                if(position.equals(emInformationEntity.getPosition())){
+                    return signRecordService.queryEmSignInfoByUserId(userId);
+                }else {
+                    return signRecordService.queryEmSignInfoByDepartment(emInformationEntity.getDepartment());
+                }
+            }
+        }
+        return signRecordService.queryEmSignInfo();
     }
-
 
 }

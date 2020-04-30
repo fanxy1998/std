@@ -3,7 +3,6 @@ package com.fanxy.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -51,5 +50,10 @@ public class ViewController {
     @GetMapping("/emSalary")
     public String emSalary(){ return "emSalary"; }
 
+    @GetMapping("/emLeave")
+    public String emLeave(){ return "emLeave"; }
+
+    @GetMapping("/leaveRecord")
+    public String leaveRecord(){ return "leaveRecord"; }
 
 }

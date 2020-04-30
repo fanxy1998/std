@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
+    <meta name="renderer" content="webkit">
+    <!--国产浏览器高速模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="fanxy" />
+    <!-- 作者 -->
+    <meta name="revised" content="fanxy.v1, 2020/04" />
+    <!-- 定义页面的最新版本 -->
+    <meta name="description" content="网站简介" />
+    <!-- 网站简介 -->
+    <meta name="keywords" content="搜索关键字，以半角英文逗号隔开" />
+    <title>员工考勤</title>
+
+    <!-- 公共样式 开始 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/iconfont.css">
+    <script type="text/javascript" src="../static/framework/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/layui/css/layui.css">
+    <script type="text/javascript" src="../static/layui/layui.js"></script>
+    <!-- 滚动条插件 -->
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery.mCustomScrollbar.css">
+    <script src="../static/framework/jquery-ui-1.10.4.min.js"></script>
+    <script src="../static/framework/jquery.mousewheel.min.js"></script>
+    <script src="../static/framework/jquery.mCustomScrollbar.min.js"></script>
+    <script src="../static/framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
+    <!-- 公共样式 结束 -->
+
+</head>
+
+<body>
+<table class="layui-table" id = "emTable">
+    <thead>
+    <tr>
+        <th>姓名</th>
+        <th>所在部门</th>
+        <th>请假日期</th>
+        <th>请假天数</th>
+        <th>请假原因</th>
+        <th>审批人</th>
+        <th>是否审批</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr id="template">
+        <td id="name"></td>
+        <td id="deparment"></td>
+        <td id="LEVAE_DATE"></td>
+        <td id="LEVAE_DAYS"></td>
+        <td id="LEVAE_REASON"></td>
+        <td id="USER_LEADER"></td>
+        <td id="STATE"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<script type="text/javascript">
+
+    $(window).on('load',function () {
+        var url = "http://localhost:8080/emLeave/queryEmLeaveRecord/"+ sessionStorage.getItem("id");
+        $.get(url,function (data) {
+             // console.log(data);
+             // console.log(data.resultdata);
+            $.each(data.resultdata,function (i,n) {
+                var row = $("#template").clone();
+                row.find("#name").text(n.name);
+                row.find("#deparment").text(n.deparment);
+                row.find("#LEVAE_DATE").text(getMyDate(n.leaveDate));
+                row.find("#LEVAE_DAYS").text(n.leaveDays);
+                row.find("#LEVAE_REASON").text(n.leaveReason);
+                row.find("#USER_LEADER").text(n.userLeader);
+                row.find("#STATE").text(getState(n.state));
+                row.appendTo("#emTable");
+            });
+            //删除第二行,即删除空白行
+            $("#emTable tr").eq(1).remove();
+        });
+
+    });
+
+    function getState(state) {
+        console.log(state);
+        if(state === 0){
+            return "未审批";
+        }
+        return "已审批";
+    }
+
+    //转化日期格式
+    function getMyDate(str){
+        var oDate = new Date(str),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth()+1,
+            oDay = oDate.getDate();
+        return oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay);//最后拼接时间
+    }
+    //补0操作
+    function getzf(num){
+        if(parseInt(num) < 10){
+            num = '0'+num;
+        }
+        return num;
+    }
+
+</script>
+
+
+</body>
+
+</html>

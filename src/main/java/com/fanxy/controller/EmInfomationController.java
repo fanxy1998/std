@@ -14,10 +14,9 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/em")
 public class EmInfomationController {
-
     private EmInfomationService emInfomationService;
     private RedisUtils redisUtils;
-
+    private String sucess = "success";
 
     @Autowired
     public EmInfomationController(EmInfomationService emInfomationService) {
@@ -47,7 +46,7 @@ public class EmInfomationController {
             session.setAttribute("loginUserName", emInformationEntity.getUsername());
             //把用户ID和 sessionID保存到redis中
             redisUtils.set("loginUser:"+ emInformationEntity.getId(),session.getId());
-            return new Result<>("success","登录成功", emInformationEntity);
+            return new Result<>(sucess,"登录成功", emInformationEntity);
         }else {
             return new Result("error","账号或密码错误");
         }
@@ -72,13 +71,23 @@ public class EmInfomationController {
     }
 
     /**
-     * 分页查询员工
+     * 查询员工
      * @return 员工列表
      */
-    @GetMapping("/queryEm/{page}")
-    public Result queryEm(@PathVariable("page") int page){
-        int begin = (page-1)*10;
-        return new Result<>("success","查询成功",emInfomationService.queryEm(begin,10));
+    @GetMapping("/queryEm/{userId}")
+    public Result queryEm(@PathVariable("userId") int userId){
+        String position = "普通员工";
+        if(userId!=1){
+            EmInformationEntity emInformationEntity = emInfomationService.queryByUserId(userId);
+            if(emInformationEntity!=null){
+                if(position.equals(emInformationEntity.getPosition())){
+                    return new Result<>(sucess,"查询成功",emInformationEntity);
+                }else {
+                    return new Result<>(sucess,"查询成功",emInfomationService.findEmByDepartment(emInformationEntity.getDepartment()));
+                }
+            }
+        }
+        return new Result<>(sucess,"查询成功",emInfomationService.queryEm());
     }
 
     /**

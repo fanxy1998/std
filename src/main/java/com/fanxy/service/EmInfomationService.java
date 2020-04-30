@@ -33,8 +33,8 @@ public class EmInfomationService {
         return emInfomationMapper.login(username,password);
     }
 
-    public List<EmInformationEntity> queryEm(int begin, int num){
-        return emInfomationMapper.queryEm(begin,num);
+    public List<EmInformationEntity> queryEm(){
+        return emInfomationMapper.queryEm();
     }
 
     public void updatePassword(String username,String password){
@@ -62,5 +62,13 @@ public class EmInfomationService {
 
     public void updateEm(EmInformationEntity emInformationEntity){
         emInfomationMapper.updateEm(emInformationEntity);
+    }
+
+    public List<EmInformationEntity> findEmByDepartment(String department){
+        return emInfomationMapper.findEmByDepartment(department);
+    }
+
+    public EmInformationEntity queryByUserId(int userId){
+        return emInfomationMapper.findEminfoById(userId);
     }
 }

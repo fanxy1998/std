@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fanxy.mapper.EmLeaveMapper" >
+
+    <insert id="userLeave" parameterType="com.fanxy.entity.EmLeaveEntity">
+        INSERT INTO EM_LEAVE(USER_ID, LEVAE_DATE, LEVAE_DAYS, LEVAE_REASON, USER_LEADER, STATE)
+        VALUES(#{userId},#{leaveDate},#{leaveDays},#{leaveReason},#{userLeader},#{state})
+    </insert>
+
+    <select id="queryLeaderByuserId" parameterType="int" resultType="string">
+        SELECT USERNAME_ FROM STD_EM_INFORMATION
+        WHERE
+          DEPARMENT_ = (SELECT DEPARMENT_ FROM STD_EM_INFORMATION WHERE ID_ = #{userId})
+        AND
+          POSITION_ = '部长'
+    </select>
+
+    <select id="queryLeaveRecordByuserId" parameterType="int" resultType="com.fanxy.vo.EmLeaveVo">
+        SELECT S1.USERNAME_ name,S1.DEPARMENT_ deparment,S2.LEVAE_DATE leaveDate,
+               S2.LEVAE_DAYS leaveDays,S2.LEVAE_REASON leaveReason,S2.USER_LEADER userLeader,S2.STATE state
+        FROM STD_EM_INFORMATION S1,EM_LEAVE S2
+        WHERE S2.USER_ID = S1.ID_
+        <if test="userId!=1">
+        AND S2.USER_ID = #{userId}
+        </if>
+
+    </select>
+
+    <select id="queryLeaveRecordByDeparment" resultType="com.fanxy.vo.EmLeaveVo">
+        SELECT S1.USERNAME_ name,S1.DEPARMENT_ deparment,S2.LEVAE_DATE leaveDate,
+               S2.LEVAE_DAYS leaveDays,S2.LEVAE_REASON leaveReason,S2.USER_LEADER userLeader,S2.STATE state
+        FROM STD_EM_INFORMATION S1,EM_LEAVE S2
+        WHERE S2.USER_ID = S1.ID_
+        AND S1.DEPARMENT_ = #{deparment}
+    </select>
+
+</mapper>

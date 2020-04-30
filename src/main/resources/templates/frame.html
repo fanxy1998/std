@@ -65,15 +65,11 @@
 		                </dl>
 		            </li>
 		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>部门管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)">部门列表</a></dt>
-		                </dl>
-		            </li>
-		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-caiwu left"></i>财务管理<i class="iconfont icon-dajiantouyou right"></i></a>
+		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-caiwu left"></i>考勤管理<i class="iconfont icon-dajiantouyou right"></i></a>
 						<dl>
 							<dt><a href="javascript:void(0)" id="emSalary">员工考勤</a></dt>
+							<dt><a href="javascript:void(0)" id="emLeave">休假申请</a></dt>
+							<dt><a href="javascript:void(0)" id="leaveRecord">休假记录</a></dt>
 						</dl>
 
 		           	</li>
@@ -83,14 +79,14 @@
 		</div>
 		<!-- 左侧菜单 - 结束 -->
 
+
 		<div class="main">
 			<!-- 头部栏 - 开始 -->
 			<div class="frameTop">
-				<img class="jt" src="../static/images/top_jt.png"/>
 				<div class="topMenu">
 					<ul>
-						<li><a href="javascript:void(0)" id="name"><i class="iconfont icon-yonghu1"></i>管理员</a></li>
-						<li><a href="javascript:void(0)" id="cgPassword"><i class="iconfont icon-xiugaimima"></i>修改密码</a></li>
+						<li><a href="javascript:void(0)" id="name"><i class="layui-badge-dot layui-bg-green"></i>管理员</a></li>
+						<li><a href="javascript:void(0)" id="cgPassword"><i class="layui-badge-dot layui-bg-green"></i>修改密码</a></li>
 						<li><a href="/login"><i class="iconfont icon-084tuichu"></i>注销</a></li>
 					</ul>
 				</div>
@@ -125,7 +121,7 @@
 				},"json");
 			});
 			function getUserdata() {
-				var userdata = window.location.href.split("/")[4]
+				var userdata = window.location.href.split("/")[4];
 				var name = userdata.split("?")[0];
 				var id = userdata.split("?")[1];
 				sessionStorage.setItem("id",id);
@@ -152,12 +148,19 @@
 			$("#userList").click(function () {
 				document.getElementById('mainIframe').src="/userList";
 				document.getElementById('title').innerText = "员工列表";
-			})
+			});
 			$("#emSalary").click(function () {
 				document.getElementById('mainIframe').src="/emSalary";
 				document.getElementById('title').innerText = "员工考勤信息";
+			});
+			$("#emLeave").click(function () {
+				document.getElementById('mainIframe').src="/emLeave";
+				document.getElementById('title').innerText = "休假申请";
+			});
+			$("#leaveRecord").click(function () {
+				document.getElementById('mainIframe').src="/leaveRecord";
+				document.getElementById('title').innerText = "休假记录";
 			})
-
 		</script>
 
 	</body>

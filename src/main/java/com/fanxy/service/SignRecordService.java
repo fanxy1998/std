@@ -52,14 +52,28 @@ public class SignRecordService {
     }
 
     /**
-     * 分页查询员工考勤信息
-     * @param begin 开始
-     * @param nums  个数
+     * 查询员工考勤信息
      * @return 员工考勤信息
      */
-    public List<EmSignVo> queryEmSignInfo(int begin,int nums){
-         return signRecordMapper.queryEmSignInfo(begin,nums);
+    public List<EmSignVo> queryEmSignInfo(){
+         return signRecordMapper.queryEmSignInfo();
     }
 
+    /**
+     * 按部门查询员工签到信息
+     * @param department 部门名字
+     * @return 员工签到信息列表
+     */
+    public List<EmSignVo> queryEmSignInfoByDepartment(String department){
+        return signRecordMapper.queryEmSignInfoByDepartment(department);
+    }
 
+    /**
+     * 根据ID查询员工签到信息
+     * @param userId 员工ID
+     * @return 员工签到信息列表
+     */
+    public List<EmSignVo> queryEmSignInfoByUserId(int userId){
+        return signRecordMapper.queryEmSignInfoByUserId(userId);
+    }
 }

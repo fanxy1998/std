@@ -28,7 +28,20 @@
                S1.TELEPHONE_ telephone, S2.SIGN_DAYS signDays
         FROM STD_EM_INFORMATION S1,SIGN_RECORD S2
         WHERE S2.USER_ID = S1.ID_
-        LIMIT #{begin},#{nums}
+    </select>
+
+    <select id="queryEmSignInfoByDepartment" resultType="com.fanxy.vo.EmSignVo">
+        SELECT S1.USERNAME_ username, S1.DEPARMENT_ department, S1.POSITION_ position,
+               S1.TELEPHONE_ telephone, S2.SIGN_DAYS signDays
+        FROM STD_EM_INFORMATION S1,SIGN_RECORD S2
+        WHERE S2.USER_ID = S1.ID_ AND S1.DEPARMENT_ = #{department}
+    </select>
+
+    <select id="queryEmSignInfoByUserId" resultType="com.fanxy.vo.EmSignVo" parameterType="int">
+        SELECT S1.USERNAME_ username, S1.DEPARMENT_ department, S1.POSITION_ position,
+               S1.TELEPHONE_ telephone, S2.SIGN_DAYS signDays
+        FROM STD_EM_INFORMATION S1,SIGN_RECORD S2
+        WHERE S2.USER_ID = S1.ID_ AND S2.USER_ID = #{userId}
     </select>
 
 </mapper>

@@ -19,20 +19,18 @@ public interface EmInfomationMapper {
     EmInformationEntity findEminfoById(int id);
 
     /**
-     * 分页查询员工
-     * @param begin 开始
-     * @param num 个数
+     * 查询员工
      * @return 员工列表
      */
-    List<EmInformationEntity> queryEm(@Param("begin") int begin, @Param("num") int num);
+    List<EmInformationEntity> queryEm();
 
 
     /**
      * 根据部门得到员工列表
-     * @param department 部门ID
+     * @param department 部门名称
      * @return  员工列表
      */
-    List<EmInformationEntity> findEmByDepartment(int department);
+    List<EmInformationEntity> findEmByDepartment(String department);
 
 
 
