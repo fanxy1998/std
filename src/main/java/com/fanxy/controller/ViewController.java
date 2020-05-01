@@ -56,4 +56,7 @@ public class ViewController {
     @GetMapping("/leaveRecord")
     public String leaveRecord(){ return "leaveRecord"; }
 
+    @GetMapping("/leaveApproval")
+    public String leaveApproval(){ return "leaveApproval"; }
+
 }

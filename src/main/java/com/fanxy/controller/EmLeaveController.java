@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/emLeave")
 public class EmLeaveController {
 
+    private  String success = "SUCCESS";
     private EmLeaveService emLeaveService;
 
     private EmInfomationService emInfomationService;
@@ -31,7 +32,7 @@ public class EmLeaveController {
 
     @GetMapping("/queryLeaderByuserId/{userId}")
     public Result queryLeaderByuserId(@PathVariable("userId") int userId){
-        return new Result<>("SUCCESS","查询成功",emLeaveService.queryLeaderByuserId(userId));
+        return new Result<>(success,"查询成功",emLeaveService.queryLeaderByuserId(userId));
     }
 
     @PostMapping("/userLeave")
@@ -47,11 +48,33 @@ public class EmLeaveController {
         EmInformationEntity emInformationEntity = emInfomationService.queryByUserId(userId);
         if(emInformationEntity!=null){
             if(!position.equals(emInformationEntity.getPosition())){
-                return new Result<>("SECCUSS","查询成功",emLeaveService.queryLeaveRecordByDeparment(emInformationEntity.getDepartment()));
+                return new Result<>(success,"查询成功",emLeaveService.queryLeaveRecordByDeparment(emInformationEntity.getDepartment()));
             }else {
-                return new Result<>("SECCUSS","查询成功",emLeaveService.queryLeaveRecordByuserId(userId));
+                return new Result<>(success,"查询成功",emLeaveService.queryLeaveRecordByuserId(userId));
             }
         }
         return null;
     }
+
+    @GetMapping("approvalEmLeaveRecord/{userId}")
+    public Result approvalEmLeaveRecord(@PathVariable("userId") int userId){
+        String position = "普通员工";
+        EmInformationEntity emInformationEntity = emInfomationService.queryByUserId(userId);
+        if(emInformationEntity!=null){
+            if(!position.equals(emInformationEntity.getPosition())){
+                return new Result<>(success,"查询成功",emLeaveService.queryLeaveRecordByDeparment(emInformationEntity.getDepartment()));
+            }
+            return null;
+        }
+        return null;
+    }
+
+    @GetMapping("approvalEmLeave/{state}/{emName}/{leaderName}")
+    public String approvalEmLeave(@PathVariable("state") int state,@PathVariable("emName") String emName,
+                                  @PathVariable("leaderName") String leaderName){
+
+        emLeaveService.approvalEmLeave(state,emName,leaderName);
+        return "操作成功";
+    }
+
 }

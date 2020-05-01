@@ -70,6 +70,7 @@
 							<dt><a href="javascript:void(0)" id="emSalary">员工考勤</a></dt>
 							<dt><a href="javascript:void(0)" id="emLeave">休假申请</a></dt>
 							<dt><a href="javascript:void(0)" id="leaveRecord">休假记录</a></dt>
+							<dt><a href="javascript:void(0)" id="leaveApproval">休假审批</a></dt>
 						</dl>
 
 		           	</li>
@@ -125,6 +126,7 @@
 				var name = userdata.split("?")[0];
 				var id = userdata.split("?")[1];
 				sessionStorage.setItem("id",id);
+				console.log(name);
 				$("#name").text(name);
 			}
 
@@ -160,7 +162,12 @@
 			$("#leaveRecord").click(function () {
 				document.getElementById('mainIframe').src="/leaveRecord";
 				document.getElementById('title').innerText = "休假记录";
-			})
+			});
+			$("#leaveApproval").click(function () {
+				document.getElementById('mainIframe').src="/leaveApproval";
+				document.getElementById('title').innerText = "休假审批";
+			});
+
 		</script>
 
 	</body>

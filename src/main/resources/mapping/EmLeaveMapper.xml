@@ -34,4 +34,10 @@
         AND S1.DEPARMENT_ = #{deparment}
     </select>
 
+    <update id="approvalEmLeave">
+        UPDATE EM_LEAVE SET STATE = #{state}
+        WHERE USER_ID = (SELECT ID_ FROM STD_EM_INFORMATION WHERE USERNAME_ = #{emName})
+        AND USER_LEADER = #{leaderName}
+    </update>
+
 </mapper>

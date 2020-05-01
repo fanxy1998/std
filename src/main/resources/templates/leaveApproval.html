@@ -15,7 +15,7 @@
     <meta name="description" content="网站简介" />
     <!-- 网站简介 -->
     <meta name="keywords" content="搜索关键字，以半角英文逗号隔开" />
-    <title>员工考勤</title>
+    <title>休假审批</title>
 
     <!-- 公共样式 开始 -->
     <link rel="stylesheet" type="text/css" href="../static/css/base.css">
@@ -44,6 +44,7 @@
         <th>请假原因</th>
         <th>审批人</th>
         <th>是否审批</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -55,6 +56,10 @@
         <td id="LEVAE_REASON"></td>
         <td id="USER_LEADER"></td>
         <td id="STATE"></td>
+        <td>
+            <button class="layui-btn layui-btn-xs" onclick="agree(this)">同意</button>
+            <button class="layui-btn layui-btn-xs" onclick="refuse(this)">拒绝</button>
+        </td>
     </tr>
     </tbody>
 </table>
@@ -63,10 +68,10 @@
 <script type="text/javascript">
 
     $(window).on('load',function () {
-        var url = "http://localhost:8080/emLeave/queryEmLeaveRecord/"+ sessionStorage.getItem("id");
+        var url = "http://localhost:8080/emLeave/approvalEmLeaveRecord/"+ sessionStorage.getItem("id");
         $.get(url,function (data) {
-             // console.log(data);
-             // console.log(data.resultdata);
+            // console.log(data);
+            // console.log(data.resultdata);
             $.each(data.resultdata,function (i,n) {
                 var row = $("#template").clone();
                 row.find("#name").text(n.name);
@@ -109,6 +114,30 @@
             num = '0'+num;
         }
         return num;
+    }
+
+    /**
+     * 同意
+     */
+    function agree(obj){
+        var url = "http://localhost:8080/emLeave/approvalEmLeave/"+1+"/"+$(obj).parents("tr").find("td:eq(0)").html()+"/"
+            +$(obj).parents("tr").find("td:eq(5)").html();
+        $.get(url,function (data) {
+            alert(data);
+            window.location.reload()
+        });
+    }
+
+    /**
+     * 拒绝
+     */
+    function refuse(obj){
+        var url = "http://localhost:8080/emLeave/approvalEmLeave/"+2+"/"+$(obj).parents("tr").find("td:eq(0)").html()+"/"
+            +$(obj).parents("tr").find("td:eq(5)").html();
+        $.get(url,function (data) {
+            alert(data);
+            window.location.reload()
+        });
     }
 
 </script>

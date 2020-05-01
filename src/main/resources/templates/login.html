@@ -223,7 +223,7 @@
                 if(data.sign === "error"){
                     alert(data.msg);
                 }else {
-                    url = "index/"+data.resultdata.username+"?"+data.resultdata.id;
+                    url = "index/"+encodeURI(encodeURI(data.resultdata.username))+"?"+data.resultdata.id;
                     window.location.href = url;
                 }
            },"json")
@@ -239,10 +239,6 @@
     <label><input type="password" placeholder="密码" id="password"/></label>
 
                 <input type="button" value="登录" id="login"/>
-                <p class="change_link" style="text-align: center">
-                    <span class="text">忘记密码 ?</span>
-                    <a href="login.html" class="to_login"> 修改密码 </a>
-                </p>
             </form>
         </div>
         <ul>

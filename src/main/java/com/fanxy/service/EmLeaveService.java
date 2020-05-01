@@ -57,4 +57,14 @@ public class EmLeaveService {
         return emLeaveMapper.queryLeaveRecordByDeparment(deparment);
     }
 
+    /**
+     * 审批请假
+     * @param state 是否同意
+     * @param emName 申请人姓名
+     * @param leaderName 领导人姓名
+     */
+    public void approvalEmLeave(int state,String emName,String leaderName){
+        emLeaveMapper.approvalEmLeave(state,emName,leaderName);
+    }
+
 }
